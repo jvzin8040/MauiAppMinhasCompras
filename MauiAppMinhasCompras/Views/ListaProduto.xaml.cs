@@ -15,9 +15,9 @@ public partial class ListaProduto : ContentPage
 
     protected async override void OnAppearing()
     {
-        try
+        try // manteve o código da agenda anterior e foi adicionado um try catch
         {
-            lista.Clear();
+            lista.Clear(); // limpa a lista quando a pagina recarregar
 
             List<Produto> tmp = await App.Db.GetAll();
 
@@ -42,9 +42,8 @@ public partial class ListaProduto : ContentPage
 
     private async void txt_search_TextChanged(object sender, TextChangedEventArgs e)
     {
-        try
+        try // manteve codigo anterior e foi adicionado um try catch para tratar exceções
         {
-
             string q = e.NewTextValue;
 
             lista.Clear();
@@ -75,21 +74,22 @@ public partial class ListaProduto : ContentPage
         }
     }
 
-    private async void MenuItem_Clicked(object sender, EventArgs e)
+    private async void MenuItem_Clicked(object sender, EventArgs e) 
     {
 
-        try 
+        try  // metodo try catch para tratar exceções
         {
-            MenuItem selecionado = sender as MenuItem;
+            MenuItem selecionado = sender as MenuItem; // sempre que um item for clicado no menu, ele vai ser guardado na variável selecionado
 
-            Produto p = selecionado.BindingContext as Produto;
+            Produto p = selecionado.BindingContext as Produto; // como vai chegar um BindingContext, ele vai ser guardado na variável Produto p
 
-            bool confirm = await DisplayAlert("Confirmação", $"Deseja excluir o produto {p.Descricao}?", "Sim", "Não");
+            bool confirm = await DisplayAlert("Confirmação",
+                $"Deseja excluir o produto {p.Descricao}?", "Sim", "Não"); // pergunta para o usuario se ele deseja excluir o produto
 
-            if (confirm)
+            if (confirm) // se o usuario clicar em sim, o produto vai ser excluido
             {
-                await App.Db.Delete(p.Id);
-                lista.Remove(p);
+                await App.Db.Delete(p.Id); // o produto vai ser excluido do banco de dados
+                lista.Remove(p); // o produto vai ser removido da lista
             }
         }
 
@@ -103,13 +103,13 @@ public partial class ListaProduto : ContentPage
 
     private void lst_produtos_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        try
+        try // metodo try catch para tratar exceções
         {
-            Produto p = e.SelectedItem as Produto;
+            Produto p = e.SelectedItem as Produto; // gaurda o produto selecionado na variável p
 
-            Navigation.PushAsync(new Views.EditarProduto
+            Navigation.PushAsync(new Views.EditarProduto // o item selecionado vai ser enviado para a página de edição
             {
-                BindingContext = p,
+                BindingContext = p, // guarda o produto selecionado na variável BindingContext
             });
         }
         catch (Exception ex)
