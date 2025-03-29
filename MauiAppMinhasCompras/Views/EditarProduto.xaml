@@ -3,28 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppMinhasCompras.Views.EditarProduto"
              Title="{Binding Descricao}">
-    <!-- adicionado para aparecer o nome do produto no titulo da pagina -->
 
-    <ContentPage.ToolbarItems> <!--  foi adicionado um ToolbarItem dentro da ContentPage para salvar o produto -->
-        <ToolbarItem Text="Salvar" Clicked="ToolbarItem_Clicked"/> <!--  cria o botão Salvar com um clicked -->
+    <ContentPage.ToolbarItems> 
+        <ToolbarItem Text="Salvar" Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
 
     <VerticalStackLayout Spacing="10" Padding="10">
-        <!--  cria um VerticalStackLayout com um espaçamento de 10 e um padding de 10 -->
+
         <Label Text="Descrição Produto: " />
-        <!--  cria um label com o texto Descrição Produto -->
         <Entry x:Name="txt_descricao" Text="{Binding Descricao}" />
-        <!--  cria um Entry com o nome txt_descricao e um binding com a propriedade Descricao -->
-
+       
         <Label Text="Quantidade: " />
-        <!--  cria um label com o texto Quantidade -->
         <Entry x:Name="txt_quantidade" Keyboard="Numeric" Text="{Binding Quantidade}"/>
-        <!--  cria um Entry com o nome txt_quantidade, um teclado numerico e um binding com a propriedade Quantidade -->
-
+        
         <Label Text="Preço Unitário: " />
-        <!--  cria um label com o texto Preço Unitário -->
         <Entry x:Name="txt_preco" Text="{Binding Preco}" Keyboard="Numeric" />
-        <!--  cria um Entry com o nome txt_preco, um binding com a propriedade Preco e um teclado numerico -->
 
     </VerticalStackLayout>
 </ContentPage>

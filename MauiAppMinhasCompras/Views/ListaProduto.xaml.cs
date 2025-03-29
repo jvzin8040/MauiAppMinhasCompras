@@ -1,7 +1,7 @@
 namespace MauiAppMinhasCompras.Views;
 using MauiAppMinhasCompras.Models;
 using System.Collections.ObjectModel;
-
+// explicação do código abaixo:
 public partial class ListaProduto : ContentPage
 {
     ObservableCollection<Produto> lista = new ObservableCollection<Produto>();
@@ -9,18 +9,16 @@ public partial class ListaProduto : ContentPage
     public ListaProduto()
     {
         InitializeComponent();
-
+        CarregarCategorias(); // inicializa o método CarregarCategorias
         lst_produtos.ItemsSource = lista;
     }
 
     protected async override void OnAppearing()
     {
-        try // manteve o código da agenda anterior e foi adicionado um try catch
+        try 
         {
-            lista.Clear(); // limpa a lista quando a pagina recarregar
-
+            lista.Clear(); 
             List<Produto> tmp = await App.Db.GetAll();
-
             tmp.ForEach(i => lista.Add(i));
         }
         catch (Exception ex)
@@ -42,16 +40,12 @@ public partial class ListaProduto : ContentPage
 
     private async void txt_search_TextChanged(object sender, TextChangedEventArgs e)
     {
-        try // manteve codigo anterior e foi adicionado um try catch para tratar exceções
+        try 
         {
             string q = e.NewTextValue;
-
             lst_produtos.IsRefreshing = true;
-
             lista.Clear();
-
             List<Produto> tmp = await App.Db.Search(q);
-
             tmp.ForEach(i => lista.Add(i));
         }
         catch (Exception ex)
@@ -66,12 +60,10 @@ public partial class ListaProduto : ContentPage
 
     private void ToolbarItem_Clicked_1(object sender, EventArgs e)
     {
-        try { 
-
+        try 
+        { 
         double soma = lista.Sum(i => i.Total);
-
         string msg = $" O total é {soma:C}";
-
         DisplayAlert("Total dos Produtos", msg, "OK");
         }
         catch (Exception ex)
@@ -83,19 +75,16 @@ public partial class ListaProduto : ContentPage
     private async void MenuItem_Clicked(object sender, EventArgs e) 
     {
 
-        try  // metodo try catch para tratar exceções
+        try  
         {
-            MenuItem selecionado = sender as MenuItem; // sempre que um item for clicado no menu, ele vai ser guardado na variável selecionado
-
-            Produto p = selecionado.BindingContext as Produto; // como vai chegar um BindingContext, ele vai ser guardado na variável Produto p
-
+            MenuItem selecionado = sender as MenuItem; 
+            Produto p = selecionado.BindingContext as Produto; 
             bool confirm = await DisplayAlert("Confirmação",
-                $"Deseja excluir o produto {p.Descricao}?", "Sim", "Não"); // pergunta para o usuario se ele deseja excluir o produto
-
-            if (confirm) // se o usuario clicar em sim, o produto vai ser excluido
+                $"Deseja excluir o produto {p.Descricao}?", "Sim", "Não"); 
+            if (confirm) 
             {
-                await App.Db.Delete(p.Id); // o produto vai ser excluido do banco de dados
-                lista.Remove(p); // o produto vai ser removido da lista
+                await App.Db.Delete(p.Id);
+                lista.Remove(p); 
             }
         }
 
@@ -109,13 +98,12 @@ public partial class ListaProduto : ContentPage
 
     private void lst_produtos_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        try // metodo try catch para tratar exceções
+        try 
         {
-            Produto p = e.SelectedItem as Produto; // gaurda o produto selecionado na variável p
-
-            Navigation.PushAsync(new Views.EditarProduto // o item selecionado vai ser enviado para a página de edição
+            Produto p = e.SelectedItem as Produto; 
+            Navigation.PushAsync(new Views.EditarProduto 
             {
-                BindingContext = p, // guarda o produto selecionado na variável BindingContext
+                BindingContext = p, 
             });
         }
         catch (Exception ex)
@@ -126,12 +114,10 @@ public partial class ListaProduto : ContentPage
 
     private async void lst_produtos_Refreshing(object sender, EventArgs e)
     {
-        try // manteve o código da agenda anterior e foi adicionado um try catch
+        try 
         {
-            lista.Clear(); // limpa a lista quando a pagina recarregar
-
+            lista.Clear();
             List<Produto> tmp = await App.Db.GetAll();
-
             tmp.ForEach(i => lista.Add(i));
         }
         catch (Exception ex)
@@ -141,5 +127,51 @@ public partial class ListaProduto : ContentPage
         {
             lst_produtos.IsRefreshing = false;
         }
+    }
+
+
+
+    private void CarregarCategorias() // método CarregarCategorias
+    {
+        var categorias = new List<string> // cria uma lista de categorias
+    {
+        "Todos",
+        "Alimentos",
+        "Higiene",
+        "Limpeza"
+    };
+        pck_categoria_filtro.ItemsSource = categorias; // atribui a lista de categorias ao Picker
+    }
+
+
+
+
+    private async Task FiltrarProdutosPorCategoria(string categoria) // método FiltrarProdutosPorCategoria
+    {
+        lista.Clear(); // limpa a lista de produtos
+        List<Produto> produtos; // cria uma lista produtos
+
+        if (categoria == "Todos")   // se a categoria for "Todos"
+        {
+            produtos = await App.Db.GetAll(); // busca todos os produtos
+        }
+        else 
+        {
+            produtos = await App.Db.SearchByCategory(categoria); // busca produtos pela categoria
+        }
+
+        produtos.ForEach(i => lista.Add(i)); // adiciona os produtos na lista
+    }
+
+    private async void pck_categoria_SelectedIndexChanged(object sender, EventArgs e) 
+    {
+        string categoriaSelecionada = pck_categoria_filtro.SelectedItem.ToString(); // pega a categoria selecionada
+        await FiltrarProdutosPorCategoria(categoriaSelecionada); // chama o método FiltrarProdutosPorCategoria
+    }
+
+    private async void ToolbarItem_Clicked_2(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new RelatorioGastosPorCategoria());
+        // navega para a página RelatorioGastosPorCategoria
     }
 }

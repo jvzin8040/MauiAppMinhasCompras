@@ -11,7 +11,7 @@
     
     
     <VerticalStackLayout Spacing="10" Padding="10">
-        <Label Text="Descrição Produto: " />
+        <Label Text="Descrição do Produto: " />
         <Entry x:Name="txt_descricao" />
         
         <Label Text="Quantidade: " />
@@ -19,6 +19,12 @@
 
         <Label Text="Preço Unitário: " />
         <Entry x:Name="txt_preco" Keyboard="Numeric" />
+
+        <Label Text="Categoria do Produto: " /> <!-- Adicionado a label categoria -->
+        <Picker x:Name="pck_categoria"
+        Title="Selecione a categoria"
+        SelectedItem="{Binding Categoria}"/>
+        <!-- Adicionado o picker da categoria -->
 
     </VerticalStackLayout>
 </ContentPage>

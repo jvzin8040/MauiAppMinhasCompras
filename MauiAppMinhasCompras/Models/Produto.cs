@@ -10,14 +10,14 @@ namespace MauiAppMinhasCompras.Models
         public int Id { get; set; }
         public string Descricao 
         { 
-            get => _descricao;  // verifica se a descrição é nula
+            get => _descricao;  
             set 
             {
-                if (value == null) // se a descrição for nula, vai ser lançada uma exceção
+                if (value == null) 
                 { 
-                throw new Exception("Descrição não pode ser vazia"); // notifica o usuario que a descrição não pode ser vazia
+                throw new Exception("Descrição não pode ser vazia"); 
                 }
-                else // se a descrição não for nula, a descrição vai ser guardada na variável _descrição
+                else 
                 {
                     _descricao = value; 
                 }
@@ -26,5 +26,7 @@ namespace MauiAppMinhasCompras.Models
         public double Quantidade { get; set; }
         public double Preco { get; set; }
         public double Total { get => Quantidade * Preco; }
+        public string Categoria { get; set; } // Foi adicionado a String categoria
+
     }
 }

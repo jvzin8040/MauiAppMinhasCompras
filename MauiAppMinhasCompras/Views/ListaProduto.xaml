@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppMinhasCompras.Views.ListaProduto"
              Title="ListaProduto">
-
+<!-- explicação do codigo abaixo-->
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Somar" Clicked="ToolbarItem_Clicked_1" />
         <ToolbarItem Text="Adicionar" Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="Relatório" Clicked="ToolbarItem_Clicked_2" /> <!-- Adicionado o botão de relatório -->
     </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>
@@ -23,8 +24,14 @@
                    Placeholder="Busca de Produtos" 
                    TextChanged="txt_search_TextChanged"
                    />
-
-        <Frame Padding="0" Margin="20" VerticalOptions="FillAndExpand">
+        <Label Text="Categoria:" />
+        <!-- Adicionado o label de categoria -->
+        <Picker x:Name="pck_categoria_filtro" 
+                Title="Selecione a categoria"     
+                SelectedIndexChanged="pck_categoria_SelectedIndexChanged" />
+            <!-- Adicionado o picker da categoria -->
+            
+            <Frame Padding="0" Margin="20" VerticalOptions="FillAndExpand">
         <ListView x:Name="lst_produtos" IsPullToRefreshEnabled="True" Refreshing="lst_produtos_Refreshing" ItemSelected="lst_produtos_ItemSelected">
             <ListView.Header>
                 <Grid ColumnDefinitions="30, 100, 80, 50, 90" BackgroundColor="{StaticResource Gray100}">

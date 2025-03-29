@@ -45,6 +45,14 @@ namespace MauiAppMinhasCompras.Helpers
         }
 
 
+        public Task<List<Produto>> SearchByCategory(string categoria) 
+            // cria uma função que vai buscar os produtos por categoria
+        {
+            string sql = "SELECT * FROM Produto WHERE Categoria = ?"; 
+            // cria uma string sql que vai buscar os produtos que tem a categoria igual a categoria passada como parametro
+            return _conn.QueryAsync<Produto>(sql, categoria); 
+            // retorna a lista de produtos que tem a categoria igual a categoria passada como parametro
+        }
 
 
     }
